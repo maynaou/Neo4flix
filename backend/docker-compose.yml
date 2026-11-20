@@ -1,0 +1,43 @@
+services:
+  neo4j:
+    image: neo4j:5
+    container_name: neo4j
+    environment:
+      NEO4J_AUTH: "${NEO4J_USERNAME}/${NEO4J_PASSWORD}"
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo4j_data:/data
+
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    environment:
+      SPRING_NEO4J_URI: bolt://neo4j:7687
+      SPRING_NEO4J_AUTHENTICATION_USERNAME: "${NEO4J_USERNAME}"
+      SPRING_NEO4J_AUTHENTICATION_PASSWORD: "${NEO4J_PASSWORD}"
+    ports:
+      - "8081:8080"
+    depends_on:
+      neo4j:
+        condition: service_healthy
+
+  discovery-service:
+    build: ./discovery-service
+    container_name: discovery-service
+    environment:
+      SERVER_PORT: 8761
+    ports:
+      - "8761:8761"
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8888:8888"
+    depends_on:
+      - discovery-service
+
+volumes:
+  neo4j_data:
