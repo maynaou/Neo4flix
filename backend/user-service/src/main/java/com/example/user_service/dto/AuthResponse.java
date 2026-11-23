@@ -1,4 +1,11 @@
 package com.example.user_service.dto;
 
-public record AuthResponse(String username, String email, String role) {
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+public class AuthResponse {
+    private String accessToken;
+    private String refreshToken;
 }

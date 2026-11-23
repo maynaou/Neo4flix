@@ -23,5 +23,5 @@ public class UserDetailService implements UserDetailsService {
             .or(() -> authRepository.findByUsername(identifier))
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
           return new CustomUserDetails(user);
-        }
+    }
 }

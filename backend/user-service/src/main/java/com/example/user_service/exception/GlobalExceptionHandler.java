@@ -32,4 +32,11 @@ public class GlobalExceptionHandler {
                                 .body(new ApiError("USER_TAKEN", ex.getMessage()));
         }
 
+        @ExceptionHandler(InvalidRefreshTokenException.class)
+        public ResponseEntity<ApiError> handleInvalidRefreshToken(InvalidRefreshTokenException ex) {
+                return ResponseEntity
+                                .status(HttpStatus.UNAUTHORIZED)
+                                .body(new ApiError("UNAUTHORIZED", ex.getMessage()));
+        }
+
 }
