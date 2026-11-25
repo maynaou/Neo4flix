@@ -1,0 +1,51 @@
+<article class="movie-card" [class.is-hovered]="pointerHover()">
+  <a
+    class="poster-link"
+    [routerLink]="['/films', movie().id]"
+    [title]="movie().title"
+    [attr.aria-label]="'Découvrir ' + movie().title"
+  >
+    <div class="poster-image">
+      @if (imageUrl(); as image) {
+        <img
+          [src]="image"
+          [alt]="'Affiche de ' + movie().title"
+          width="400"
+          height="600"
+          loading="lazy"
+          decoding="async"
+          draggable="false"
+          (error)="skipImage()"
+        />
+      } @else {
+        <div class="poster-fallback"><nfx-icon name="film" /><small>NEO4FLIX</small></div>
+      }
+    </div>
+    <span class="poster-scrim" aria-hidden="true"></span>
+    <span class="poster-wash" aria-hidden="true"></span>
+    <div class="poster-caption">
+      <p class="movie-meta">
+        <span>{{ movie().releaseYear ?? 'À venir' }}</span>
+        <span class="meta-dot" aria-hidden="true">·</span>
+        <span>{{ movie().genres[0] || 'Cinéma' }}</span>
+      </p>
+      <h3 class="movie-title">{{ movie().title }}</h3>
+      <span class="poster-discover" aria-hidden="true"
+        >Voir le film <nfx-icon name="upRight"
+      /></span>
+    </div>
+  </a>
+  <button
+    class="card-save icon-button"
+    [class.saved]="watchlist.has(movie().id)"
+    (click)="watchlist.toggle(movie())"
+    [attr.aria-label]="
+      (watchlist.has(movie().id) ? 'Retirer ' : 'Ajouter ') +
+      movie().title +
+      (watchlist.has(movie().id) ? ' de ma liste' : ' à ma liste')
+    "
+    [attr.aria-pressed]="watchlist.has(movie().id)"
+  >
+    <nfx-icon [name]="watchlist.has(movie().id) ? 'check' : 'plus'" />
+  </button>
+</article>

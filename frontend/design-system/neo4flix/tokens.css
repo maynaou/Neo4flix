@@ -1,0 +1,20 @@
+:root {
+  --color-primary: #810100;
+  --color-on-primary: #EDEBDD;
+  --color-secondary: #630000;
+  --color-on-secondary: #EDEBDD;
+  --color-accent: #810100;
+  --color-on-accent: #EDEBDD;
+  --color-background: #1B1717;
+  --color-foreground: #EDEBDD;
+  --color-card: #281D1D;
+  --color-card-foreground: #EDEBDD;
+  --color-muted: #382222;
+  --color-muted-foreground: #C4B9AE;
+  --color-border: #513130;
+  --color-destructive: #F2BBB1;
+  --color-on-destructive: #3F2221;
+  --color-ring: #EDEBDD;
+  --font-heading: "Space Grotesk", Inter, sans-serif;
+  --font-body: Inter, sans-serif;
+}

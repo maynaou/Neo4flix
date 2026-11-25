@@ -1,0 +1,13 @@
+<div #cover class="page-transition" [class.active]="transition.running()" aria-hidden="true">
+  @if (transition.artwork(); as artwork) {
+    @if (artwork.image) {
+      <img class="transition-image" [src]="artwork.image" alt="" width="1280" height="720" />
+    }
+    <div class="transition-shade"></div>
+    <div class="transition-copy">
+      <span>VOTRE PROCHAIN UNIVERS</span>
+      <strong>{{ artwork.title }}</strong>
+      <p>{{ artwork.description }}</p>
+    </div>
+  }
+</div>

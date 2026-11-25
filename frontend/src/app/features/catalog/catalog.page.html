@@ -1,0 +1,329 @@
+<div
+  class="page"
+  [class.explore-landing]="immersive()"
+  [class.genres-page]="mode() === 'genres'"
+  [class.genre-landing]="mode() === 'genre' && !!activeGenre()"
+  nfxPageMotion
+  [nfxPageKey]="pageKey()"
+>
+  @if (immersive()) {
+    <h1 class="sr-only">Explorer les films Neo4flix</h1>
+  } @else if (mode() === 'genre') {
+    @if (activeGenre(); as profile) {
+      <section class="genre-banner" nfxReveal aria-labelledby="genre-heading">
+        @if (activeGenreImage() && !bannerFailed()) {
+          <img
+            [src]="activeGenreImage()"
+            alt=""
+            width="1280"
+            height="720"
+            (error)="bannerFailed.set(true)"
+          />
+        }
+        <div class="genre-banner-shade"></div>
+        <div class="genre-banner-content">
+          <a class="back-link" routerLink="/genres"><nfx-icon name="left" />Tous les genres</a>
+          <div class="genre-banner-copy">
+            <p class="eyebrow">VOTRE UNIVERS CINÉMA</p>
+            <h1 id="genre-heading">{{ profile.name }}<span class="accent-dot">.</span></h1>
+            <p>{{ profile.description }}</p>
+          </div>
+          <div class="genre-banner-controls">
+            <ng-container [ngTemplateOutlet]="catalogControls" />
+          </div>
+        </div>
+      </section>
+    } @else {
+      <a class="back-link" routerLink="/genres"><nfx-icon name="left" />Tous les genres</a>
+      <div class="empty-state">
+        <span class="empty-icon"><nfx-icon name="film" /></span>
+        <h1>Cet univers reste à découvrir.</h1>
+        <p>Choisissez un genre dans notre collection pour retrouver ses films.</p>
+        <a class="button primary" routerLink="/genres"
+          >Explorer les genres<nfx-icon name="arrow"
+        /></a>
+      </div>
+    }
+  } @else {
+    <div class="page-intro" nfxReveal>
+      <div>
+        <p class="eyebrow">
+          {{
+            mode() === 'watchlist'
+              ? 'VOS PROCHAINES SÉANCES'
+              : mode() === 'genres'
+                ? 'À CHAQUE ENVIE, SON UNIVERS'
+                : 'VOTRE DOSE DE CINÉMA'
+          }}
+        </p>
+        <h1>
+          {{
+            mode() === 'watchlist'
+              ? 'Votre liste, vos envies'
+              : mode() === 'genres'
+                ? 'Quel est votre univers ?'
+                : 'Une histoire vous attend'
+          }}
+          @if (mode() !== 'genres') {
+            <span class="accent-dot">.</span>
+          }
+        </h1>
+        <p class="intro-copy">
+          {{
+            mode() === 'watchlist'
+              ? 'Vos films enregistrés sur cet appareil, prêts pour la prochaine soirée.'
+              : mode() === 'genres'
+                ? 'Un peu d’adrénaline, un autre monde, ou une belle émotion.'
+                : 'Les grands classiques. Les belles surprises. Votre prochain coup de cœur.'
+          }}
+        </p>
+      </div>
+      @if (mode() === 'genres' ? genreCards().length : !pageLoading() && !pageError()) {
+        <span class="catalog-pill"
+          ><span></span
+          >{{
+            mode() === 'watchlist'
+              ? watchlist.ids().length + ' film(s) dans votre liste'
+              : mode() === 'genres'
+                ? genreCards().length + ' univers à explorer'
+                : catalog.movies().length + ' films à explorer'
+          }}</span
+        >
+      }
+    </div>
+  }
+
+  @if (immersive()) {
+    <nfx-hero-slider [movies]="featuredMovies()" [fullscreen]="true" />
+  }
+
+  @if (mode() === 'genres') {
+    @if (genreCards().length) {
+      <section class="genre-grid" aria-label="Explorer les genres de films">
+        @for (profile of genreCards(); track profile.slug; let index = $index) {
+          <nfx-genre-card
+            [genre]="profile"
+            [index]="index"
+            [featured]="index % 12 === 0"
+            nfxReveal
+            [nfxRevealIndex]="index"
+          />
+        }
+      </section>
+    } @else if (catalog.loading()) {
+      <div
+        class="genre-grid genre-skeleton-grid"
+        aria-busy="true"
+        aria-label="Chargement des genres"
+      >
+        @for (placeholder of skeletons; track placeholder) {
+          <div class="genre-skeleton skeleton-poster"></div>
+        }
+      </div>
+    } @else {
+      <div class="empty-state" role="alert">
+        <span class="empty-icon"><nfx-icon name="film" /></span>
+        <h2>Les univers font une petite pause.</h2>
+        <p>Les genres sont momentanément indisponibles. Réessayez dans un instant.</p>
+        <button class="button primary" (click)="retry()">Réessayer<nfx-icon name="arrow" /></button>
+      </div>
+    }
+  }
+
+  @if (mode() !== 'genres' && (mode() !== 'genre' || activeGenre())) {
+    <section id="catalogue" class="catalog-section" aria-labelledby="catalog-heading">
+      @if (mode() !== 'genre') {
+        <ng-container [ngTemplateOutlet]="catalogControls" />
+      }
+      @if (pageLoading()) {
+        <div class="movie-grid" aria-busy="true" aria-label="Chargement du catalogue">
+          @for (placeholder of skeletons; track placeholder) {
+            <div class="skeleton-card">
+              <div class="skeleton-poster"></div>
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+            </div>
+          }
+        </div>
+        <p class="sr-only" role="status">Le catalogue est en cours de chargement.</p>
+      } @else if (pageError()) {
+        <div class="empty-state" role="alert">
+          <span class="empty-icon"><nfx-icon name="film" /></span>
+          <h3>Le catalogue fait une petite pause.</h3>
+          <p>Les films sont momentanément indisponibles. Réessayez dans un instant.</p>
+          <button class="button primary" (click)="retry()">
+            Réessayer<nfx-icon name="arrow" />
+          </button>
+        </div>
+      } @else if (!filteredMovies().length) {
+        <div class="empty-state">
+          <span class="empty-icon"
+            ><nfx-icon [name]="mode() === 'watchlist' ? 'bookmark' : 'search'"
+          /></span>
+          <h3>
+            {{
+              mode() === 'watchlist' && !watchlist.ids().length
+                ? 'Votre prochaine soirée commence ici.'
+                : catalog.isTmdb && mode() !== 'watchlist' && catalog.hasNextPage()
+                  ? 'Aucun film correspondant sur cette page.'
+                  : 'Pas encore de film pour cette envie.'
+            }}
+          </h3>
+          <p>
+            {{
+              mode() === 'watchlist' && !watchlist.ids().length
+                ? 'Ajoutez un film à votre liste avec le bouton + sur son affiche.'
+                : catalog.isTmdb && mode() !== 'watchlist' && catalog.hasNextPage()
+                  ? 'Passez à la page suivante ou retirez un filtre pour découvrir plus de films.'
+                  : 'Essayez un autre titre ou retirez un filtre pour découvrir plus de films.'
+            }}
+          </p>
+          @if (mode() === 'watchlist' && !watchlist.ids().length) {
+            <a class="button primary" routerLink="/">Explorer les films<nfx-icon name="arrow" /></a>
+          } @else {
+            <button class="button primary" (click)="resetFilters()">
+              Voir tous les films<nfx-icon name="arrow" />
+            </button>
+          }
+        </div>
+      } @else {
+        <div class="movie-grid">
+          @for (movie of visibleMovies(); track movie.id) {
+            <nfx-movie-card [movie]="movie" nfxReveal [nfxRevealIndex]="$index" />
+          }
+        </div>
+        @if (visibleMovies().length < filteredMovies().length) {
+          <div class="show-more" nfxReveal>
+            <button class="button secondary" (click)="limit.set(filteredMovies().length)">
+              Voir les {{ filteredMovies().length }} films<nfx-icon name="arrow" /></button
+            ><span>Encore de belles histoires à découvrir.</span>
+          </div>
+        }
+      }
+      @if (
+        catalog.isTmdb &&
+        mode() !== 'watchlist' &&
+        (catalog.hasPreviousPage() || catalog.hasNextPage())
+      ) {
+        <div class="catalog-pagination">
+          <button
+            class="button secondary"
+            (click)="catalog.previousPage()"
+            [disabled]="pageLoading() || !catalog.hasPreviousPage()"
+          >
+            <nfx-icon name="left" />Précédents
+          </button>
+          <span aria-live="polite">Page {{ catalog.page() }} sur {{ catalog.totalPages() }}</span>
+          <button
+            class="button secondary"
+            (click)="catalog.nextPage()"
+            [disabled]="pageLoading() || !catalog.hasNextPage()"
+          >
+            Suivants<nfx-icon name="arrow" />
+          </button>
+        </div>
+      }
+    </section>
+  }
+
+  <ng-template #catalogControls>
+    <div class="section-heading" nfxReveal>
+      <div>
+        <span class="section-kicker">{{
+          mode() === 'watchlist'
+            ? 'GARDÉS POUR PLUS TARD'
+            : catalog.search()
+              ? 'EXPLORER LE CATALOGUE'
+              : 'BIEN CHOISIR, C’EST DÉJÀ VOYAGER'
+        }}</span>
+        <h2 id="catalog-heading">
+          {{
+            mode() === 'watchlist'
+              ? 'À regarder bientôt'
+              : catalog.search()
+                ? 'Votre recherche'
+                : 'À découvrir ce soir'
+          }}
+        </h2>
+      </div>
+      <p class="results-count" role="status" aria-live="polite">
+        @if (!pageLoading() && !pageError()) {
+          {{ filteredMovies().length }} film{{ filteredMovies().length > 1 ? 's' : '' }}
+        }
+      </p>
+    </div>
+    <div class="catalog-toolbar" [class.genre-toolbar]="mode() === 'genre'">
+      @if (mode() !== 'genre') {
+        <div class="genre-chips" aria-label="Filtrer par genre">
+          <button
+            class="genre-chip"
+            [class.active]="!genre()"
+            [attr.aria-pressed]="!genre()"
+            (click)="genre.set('')"
+          >
+            Tous les films
+          </button>
+          @for (name of popularGenres(); track name) {
+            <button
+              class="genre-chip"
+              [class.active]="genre() === name"
+              [attr.aria-pressed]="genre() === name"
+              (click)="genre.set(name)"
+            >
+              {{ name }}
+            </button>
+          }
+        </div>
+      }
+      <div class="filter-selects">
+        @if (mode() !== 'genre') {
+          <label class="select-wrap"
+            ><span class="sr-only">Tous les genres</span
+            ><select [value]="genre()" (change)="genre.set(selectValue($event))">
+              <option value="">Tous les genres</option>
+              @for (name of catalog.genres(); track name) {
+                <option [value]="name">{{ name }}</option>
+              }</select
+            ><nfx-icon name="chevron"
+          /></label>
+        }
+        <label class="select-wrap"
+          ><span class="sr-only">Année de sortie</span
+          ><select [value]="year()" (change)="year.set(selectValue($event))">
+            <option value="">Toutes les années</option>
+            @for (value of catalog.years(); track value) {
+              <option [value]="value">{{ value }}</option>
+            }</select
+          ><nfx-icon name="chevron" /></label
+        ><label class="select-wrap sort-select"
+          ><span class="sr-only">Trier les films</span
+          ><select [value]="sort()" (change)="sort.set(selectValue($event))">
+            <option value="selection">
+              {{ catalog.isTmdb ? 'Populaires' : 'Notre sélection' }}
+            </option>
+            <option value="title">Titre A–Z</option>
+            <option value="recent">Plus récents</option>
+            <option value="oldest">Plus anciens</option></select
+          ><nfx-icon name="chevron"
+        /></label>
+      </div>
+    </div>
+    @if (catalog.search() || (mode() !== 'genre' && genre()) || year()) {
+      <div class="active-filters">
+        <span>
+          @if (catalog.search()) {
+            « {{ catalog.search() }} »
+          }
+          @if (mode() !== 'genre' && genre()) {
+            · {{ genre() }}
+          }
+          @if (year()) {
+            · {{ year() }}
+          }</span
+        ><button class="text-button" (click)="resetFilters()">
+          Effacer les filtres<nfx-icon name="close" />
+        </button>
+      </div>
+    }
+  </ng-template>
+</div>

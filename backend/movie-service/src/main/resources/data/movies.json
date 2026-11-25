@@ -1,0 +1,22 @@
+[
+  {"id":"demo-inception","title":"Inception","releaseYear":2010,"genres":["Science-fiction","Thriller"],"actors":["Leonardo DiCaprio","Joseph Gordon-Levitt","Elliot Page"]},
+  {"id":"demo-interstellar","title":"Interstellar","releaseYear":2014,"genres":["Science-fiction","Aventure","Drame"],"actors":["Matthew McConaughey","Anne Hathaway","Jessica Chastain"]},
+  {"id":"demo-the-matrix","title":"The Matrix","releaseYear":1999,"genres":["Science-fiction","Action"],"actors":["Keanu Reeves","Laurence Fishburne","Carrie-Anne Moss"]},
+  {"id":"demo-the-dark-knight","title":"The Dark Knight","releaseYear":2008,"genres":["Action","Crime","Drame"],"actors":["Christian Bale","Heath Ledger","Gary Oldman"]},
+  {"id":"demo-the-shawshank-redemption","title":"The Shawshank Redemption","releaseYear":1994,"genres":["Drame"],"actors":["Tim Robbins","Morgan Freeman"]},
+  {"id":"demo-forrest-gump","title":"Forrest Gump","releaseYear":1994,"genres":["Drame","Romance"],"actors":["Tom Hanks","Robin Wright","Gary Sinise"]},
+  {"id":"demo-pulp-fiction","title":"Pulp Fiction","releaseYear":1994,"genres":["Crime","Drame"],"actors":["John Travolta","Uma Thurman","Samuel L. Jackson"]},
+  {"id":"demo-the-godfather","title":"The Godfather","releaseYear":1972,"genres":["Crime","Drame"],"actors":["Marlon Brando","Al Pacino","James Caan"]},
+  {"id":"demo-fight-club","title":"Fight Club","releaseYear":1999,"genres":["Drame","Thriller"],"actors":["Brad Pitt","Edward Norton","Helena Bonham Carter"]},
+  {"id":"demo-gladiator","title":"Gladiator","releaseYear":2000,"genres":["Action","Aventure","Drame"],"actors":["Russell Crowe","Joaquin Phoenix","Connie Nielsen"]},
+  {"id":"demo-titanic","title":"Titanic","releaseYear":1997,"genres":["Drame","Romance"],"actors":["Leonardo DiCaprio","Kate Winslet","Billy Zane"]},
+  {"id":"demo-avatar","title":"Avatar","releaseYear":2009,"genres":["Science-fiction","Action","Aventure"],"actors":["Sam Worthington","Zoe Saldaña","Sigourney Weaver"]},
+  {"id":"demo-jurassic-park","title":"Jurassic Park","releaseYear":1993,"genres":["Science-fiction","Aventure","Thriller"],"actors":["Sam Neill","Laura Dern","Jeff Goldblum"]},
+  {"id":"demo-back-to-the-future","title":"Back to the Future","releaseYear":1985,"genres":["Science-fiction","Aventure","Comédie"],"actors":["Michael J. Fox","Christopher Lloyd","Lea Thompson"]},
+  {"id":"demo-the-fellowship-of-the-ring","title":"The Lord of the Rings: The Fellowship of the Ring","releaseYear":2001,"genres":["Fantastique","Aventure"],"actors":["Elijah Wood","Ian McKellen","Viggo Mortensen"]},
+  {"id":"demo-harry-potter-philosophers-stone","title":"Harry Potter and the Philosopher's Stone","releaseYear":2001,"genres":["Fantastique","Aventure"],"actors":["Daniel Radcliffe","Emma Watson","Rupert Grint"]},
+  {"id":"demo-toy-story","title":"Toy Story","releaseYear":1995,"genres":["Animation","Aventure","Comédie"],"actors":["Tom Hanks","Tim Allen","Annie Potts"]},
+  {"id":"demo-finding-nemo","title":"Finding Nemo","releaseYear":2003,"genres":["Animation","Aventure","Comédie"],"actors":["Albert Brooks","Ellen DeGeneres","Alexander Gould"]},
+  {"id":"demo-spirited-away","title":"Spirited Away","releaseYear":2001,"genres":["Animation","Fantastique","Aventure"],"actors":["Rumi Hiiragi","Miyu Irino","Mari Natsuki"]},
+  {"id":"demo-parasite","title":"Parasite","releaseYear":2019,"genres":["Drame","Thriller"],"actors":["Song Kang-ho","Lee Sun-kyun","Cho Yeo-jeong"]}
+]

@@ -1,0 +1,74 @@
+:host {
+  display: contents;
+}
+
+.page-transition {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+  visibility: hidden;
+  background: var(--maroon);
+  pointer-events: none;
+  transform: translateY(100%);
+}
+
+.page-transition.active {
+  pointer-events: auto;
+}
+
+.transition-image,
+.transition-shade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.transition-image {
+  object-fit: cover;
+}
+
+.transition-shade {
+  background:
+    linear-gradient(
+      140deg,
+      color-mix(in srgb, var(--maroon) 78%, transparent),
+      color-mix(in srgb, var(--surface) 65%, transparent)
+    ),
+    linear-gradient(0deg, var(--noir), transparent 90%);
+}
+
+.transition-copy {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  width: min(100%, 1200px);
+  height: 100%;
+  margin-inline: auto;
+  padding: 32px;
+}
+
+.transition-copy > span {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+.transition-copy > strong {
+  color: var(--cotton);
+  font-family: var(--heading);
+  font-size: clamp(40px, 7vw, 96px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  overflow-wrap: anywhere;
+}
+
+.transition-copy > p {
+  color: var(--cotton);
+  font-size: 16px;
+}

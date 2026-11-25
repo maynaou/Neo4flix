@@ -1,0 +1,135 @@
+[
+  {
+    "genre": "Science-fiction",
+    "tmdbId": 157336,
+    "movie": "Interstellar",
+    "image": "https://image.tmdb.org/t/p/w1280/8sNiAPPYU14PUepFNeSNGUTiHW.jpg",
+    "file": "science-fiction.jpg"
+  },
+  {
+    "genre": "Action",
+    "tmdbId": 76341,
+    "movie": "Mad Max : Fury Road",
+    "image": "https://image.tmdb.org/t/p/w1280/uT895WNwm0aIJRtGizcQhrejWUo.jpg",
+    "file": "action.jpg"
+  },
+  {
+    "genre": "Animation",
+    "tmdbId": 129,
+    "movie": "Le Voyage de Chihiro",
+    "image": "https://image.tmdb.org/t/p/w1280/dyJvKsNs2KP8qQnAXbRwDjblViy.jpg",
+    "file": "animation.jpg"
+  },
+  {
+    "genre": "Drame",
+    "tmdbId": 278,
+    "movie": "Les Évadés",
+    "image": "https://image.tmdb.org/t/p/w1280/v8xVDqt8uCul3c3mgx4VpGCwxJC.jpg",
+    "file": "drame.jpg"
+  },
+  {
+    "genre": "Thriller",
+    "tmdbId": 496243,
+    "movie": "Parasite",
+    "image": "https://image.tmdb.org/t/p/w1280/TU9NIjwzjoKPwQHoHshkFcQUCG.jpg",
+    "file": "thriller.jpg"
+  },
+  {
+    "genre": "Aventure",
+    "tmdbId": 120,
+    "movie": "Le Seigneur des anneaux : La Communauté de l'anneau",
+    "image": "https://image.tmdb.org/t/p/w1280/oiwc338EoBgS4sEI2ixAny4KQKg.jpg",
+    "file": "aventure.jpg"
+  },
+  {
+    "genre": "Fantastique",
+    "tmdbId": 671,
+    "movie": "Harry Potter à l'école des sorciers",
+    "image": "https://image.tmdb.org/t/p/w1280/5jkE2SzR5uR2egEb1rRhF22JyWN.jpg",
+    "file": "fantastique.jpg"
+  },
+  {
+    "genre": "Crime",
+    "tmdbId": 238,
+    "movie": "Le Parrain",
+    "image": "https://image.tmdb.org/t/p/w1280/ejdD20cdHNFAYAN2DlqPToXKyzx.jpg",
+    "file": "crime.jpg"
+  },
+  {
+    "genre": "Comédie",
+    "tmdbId": 120467,
+    "movie": "The Grand Budapest Hotel",
+    "image": "https://image.tmdb.org/t/p/w1280/jK65srQczOKTpW62wPxwwKztGgE.jpg",
+    "file": "comedie.jpg"
+  },
+  {
+    "genre": "Familial",
+    "tmdbId": 862,
+    "movie": "Toy Story",
+    "image": "https://image.tmdb.org/t/p/w1280/8AqWECiUHnz1Crj69uB9vhiK9Le.jpg",
+    "file": "familial.jpg"
+  },
+  {
+    "genre": "Horreur",
+    "tmdbId": 694,
+    "movie": "Shining",
+    "image": "https://image.tmdb.org/t/p/w1280/AdKA2F1SzYPhSZdEbjH1Zh75UVQ.jpg",
+    "file": "horreur.jpg"
+  },
+  {
+    "genre": "Romance",
+    "tmdbId": 597,
+    "movie": "Titanic",
+    "image": "https://image.tmdb.org/t/p/w1280/sCzcYW9h55WcesOqA12cgEr9Exw.jpg",
+    "file": "romance.jpg"
+  },
+  {
+    "genre": "Mystère",
+    "tmdbId": 11324,
+    "movie": "Shutter Island",
+    "image": "https://image.tmdb.org/t/p/w1280/lavdyiJWciCJvyLG37ZOs6HJijg.jpg",
+    "file": "mystere.jpg"
+  },
+  {
+    "genre": "Histoire",
+    "tmdbId": 504949,
+    "movie": "Le Roi",
+    "image": "https://image.tmdb.org/t/p/w1280/pmwTANjISHvxOmO3iz5kRGAArso.jpg",
+    "file": "histoire.jpg"
+  },
+  {
+    "genre": "Guerre",
+    "tmdbId": 857,
+    "movie": "Il faut sauver le soldat Ryan",
+    "image": "https://image.tmdb.org/t/p/w1280/rW2xRFlJRbTnBJlQTSjQmjevIwb.jpg",
+    "file": "guerre.jpg"
+  },
+  {
+    "genre": "Musique",
+    "tmdbId": 244786,
+    "movie": "Whiplash",
+    "image": "https://image.tmdb.org/t/p/w1280/fRGxZuo7jJUWQsVg9PREb98Aclp.jpg",
+    "file": "musique.jpg"
+  },
+  {
+    "genre": "Documentaire",
+    "tmdbId": 515042,
+    "movie": "Free Solo",
+    "image": "https://image.tmdb.org/t/p/w1280/z2uuQasY4gQJ8VDAFki746JWeQJ.jpg",
+    "file": "documentaire.jpg"
+  },
+  {
+    "genre": "Téléfilm",
+    "tmdbId": 10947,
+    "movie": "High School Musical : Premiers pas sur scène",
+    "image": "https://image.tmdb.org/t/p/w1280/2p1nyBVSEBiCTrrZeVSV9nIsqHr.jpg",
+    "file": "telefilm.jpg"
+  },
+  {
+    "genre": "Western",
+    "tmdbId": 429,
+    "movie": "Le Bon, la Brute et le Truand",
+    "image": "https://image.tmdb.org/t/p/w1280/x4biAVdPVCghBlsVIzB6NmbghIz.jpg",
+    "file": "western.jpg"
+  }
+]

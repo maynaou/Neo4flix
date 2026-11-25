@@ -1,0 +1,150 @@
+<section
+  class="wipe-hero"
+  [class.is-fullscreen]="fullscreen()"
+  role="region"
+  aria-label="La sélection Neo4flix"
+  aria-roledescription="carrousel"
+  tabindex="0"
+  [attr.aria-busy]="busy()"
+>
+  @for (movie of movies(); track movie.id; let index = $index) {
+    <article
+      #slide
+      class="wipe-slide"
+      [class.is-active]="index === activeIndex()"
+      [attr.aria-hidden]="index !== activeIndex()"
+      [attr.inert]="index === activeIndex() ? null : ''"
+      aria-roledescription="diapositive"
+      [attr.aria-label]="movie.title + ', film ' + (index + 1) + ' sur ' + movies().length"
+    >
+      <div class="wipe-media">
+        @if (cover(movie)) {
+          <img
+            class="wipe-cover"
+            [src]="cover(movie)"
+            alt=""
+            width="1280"
+            height="720"
+            loading="eager"
+            [attr.fetchpriority]="index === 0 ? 'high' : 'low'"
+            draggable="false"
+          />
+        }
+        <div class="wipe-scrim"></div>
+      </div>
+      <div class="wipe-copy">
+        <div class="wipe-heading">
+          <p class="wipe-eyebrow"><span></span> LA SÉLECTION NEO4FLIX</p>
+          <h2
+            class="wipe-title"
+            [class.long-title]="movie.title.length > 35"
+            [attr.aria-label]="movie.title"
+          >
+            @for (word of words(movie.title); track $index) {
+              <span class="wipe-word" aria-hidden="true"
+                ><span class="wipe-word-inner">{{ word }}</span></span
+              >
+            }
+          </h2>
+        </div>
+        <div class="wipe-caption">
+          <div class="wipe-meta">
+            <span>{{ movie.releaseYear ?? 'À venir' }}</span><span class="wipe-meta-dot">·</span
+            ><span>{{ movie.genres.join(' / ') }}</span>
+            @if (movie.duration) {
+              <span class="wipe-meta-dot">·</span><span>{{ movie.duration }}</span>
+            }
+          </div>
+          <p class="wipe-description">{{ description(movie) }}</p>
+          <div class="wipe-actions">
+            <a class="button primary" [routerLink]="['/films', movie.id]"
+              >Découvrir le film<nfx-icon name="upRight"
+            /></a>
+            <button
+              class="button wipe-save"
+              (click)="watchlist.toggle(movie)"
+              [attr.aria-pressed]="watchlist.has(movie.id)"
+            >
+              <nfx-icon [name]="watchlist.has(movie.id) ? 'check' : 'plus'" />{{
+                watchlist.has(movie.id) ? 'Dans ma liste' : 'Ma liste'
+              }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+  } @empty {
+    <div class="wipe-welcome">
+      <img
+        class="wipe-cover"
+        src="/assets/backdrops/interstellar.jpg"
+        alt=""
+        width="1280"
+        height="720"
+      />
+      <div class="wipe-scrim"></div>
+      <div class="wipe-copy">
+        <div class="wipe-heading">
+          <p class="wipe-eyebrow"><span></span> LE CINÉMA, CONNECTÉ.</p>
+          <h2 class="wipe-title welcome-title">De belles histoires.<br />De nouvelles émotions.</h2>
+        </div>
+        <div class="wipe-caption">
+          <p class="wipe-description">
+            Un film peut tout changer. Trouvez celui qui vous ressemble.
+          </p>
+          <a class="button primary" href="#catalogue"
+            >Explorer le catalogue<nfx-icon name="arrow"
+          /></a>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (movies().length) {
+    <div class="wipe-footer">
+      @if (fullscreen()) {
+        <a class="wipe-signature wipe-scroll-cue" href="#catalogue">
+          À découvrir ce soir <nfx-icon name="arrow" />
+        </a>
+      } @else {
+        <p class="wipe-signature">LES HISTOIRES NOUS CONNECTENT.</p>
+      }
+      <div class="wipe-controls" aria-label="Navigation du carrousel">
+        <button
+          class="wipe-arrow"
+          (click)="changeBy(-1)"
+          [disabled]="movies().length < 2"
+          aria-label="Film précédent"
+        >
+          <nfx-icon name="left" />
+        </button>
+        <span class="wipe-counter" aria-hidden="true"
+          >{{ (activeIndex() + 1).toString().padStart(2, '0')
+          }}<span> / {{ movies().length.toString().padStart(2, '0') }}</span></span
+        >
+        <button
+          class="wipe-arrow"
+          (click)="changeBy(1)"
+          [disabled]="movies().length < 2"
+          aria-label="Film suivant"
+        >
+          <nfx-icon name="arrow" />
+        </button>
+      </div>
+      <div class="wipe-pagination" aria-label="Choisir un film">
+        @for (movie of movies(); track movie.id; let index = $index) {
+          <button
+            class="wipe-page"
+            [class.is-selected]="index === activeIndex()"
+            [attr.aria-label]="'Afficher ' + movie.title"
+            [attr.aria-current]="index === activeIndex() ? 'true' : null"
+            (click)="goTo(index)"
+          >
+            <span></span>
+          </button>
+        }
+      </div>
+    </div>
+  }
+</section>
+<p class="sr-only" role="status" aria-live="polite" aria-atomic="true">{{ announcement() }}</p>

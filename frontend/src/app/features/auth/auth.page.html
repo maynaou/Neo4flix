@@ -1,0 +1,193 @@
+<div class="page auth-page" nfxPageMotion [nfxPageKey]="isRegister()">
+  <a class="back-link" routerLink="/"><nfx-icon name="left" />Retour aux films</a>
+  <div class="auth-layout">
+    <section class="auth-story" nfxReveal>
+      <p class="eyebrow">BIENVENUE DANS VOTRE UNIVERS</p>
+      <h1>Les bonnes histoires<br />commencent par<br />une <span>connexion.</span></h1>
+      <p>
+        Explorez de nouveaux mondes.<br />Retrouvez vos coups de cœur.<br />Faites du cinéma votre
+        rendez-vous.
+      </p>
+      <div class="auth-poster-stack" aria-hidden="true">
+        <img
+          class="stack-one"
+          src="/assets/posters/the-matrix.jpg"
+          alt=""
+          width="400"
+          height="600"
+        /><img
+          class="stack-two"
+          src="/assets/posters/interstellar.jpg"
+          alt=""
+          width="400"
+          height="600"
+        /><img
+          class="stack-three"
+          src="/assets/posters/inception.jpg"
+          alt=""
+          width="400"
+          height="600"
+        />
+      </div>
+      <span class="auth-story-footnote"
+        ><nfx-icon name="spark" />Une infinité d’envies. Un seul endroit.</span
+      >
+    </section>
+    <section class="auth-panel" nfxReveal aria-labelledby="auth-heading">
+      <div class="auth-panel-content">
+        <header class="auth-panel-header">
+          <div class="auth-identity">
+            <span class="auth-symbol"><nfx-icon [name]="isRegister() ? 'plus' : 'user'" /></span>
+            <p class="eyebrow">VOTRE ESPACE NEO4FLIX</p>
+          </div>
+          <h2 id="auth-heading">
+            {{ isRegister() ? 'Faites partie de l’histoire.' : 'Heureux de vous revoir.' }}
+          </h2>
+          <p class="auth-subtitle">
+            {{
+              isRegister()
+                ? 'Créez votre compte et trouvez votre prochaine belle découverte.'
+                : 'Connectez-vous pour retrouver votre univers cinéma.'
+            }}
+          </p>
+        </header>
+        @if (registered() && !isRegister()) {
+          <p class="success-message" role="status">
+            <nfx-icon name="check" />Votre compte est créé. Vous pouvez vous connecter.
+          </p>
+        }
+        <form
+          class="auth-form"
+          [formGroup]="form"
+          (ngSubmit)="submit()"
+          [attr.aria-busy]="pending()"
+          novalidate
+        >
+          @if (error() || (submitted() && invalidFields().length)) {
+            <div #errorSummary class="form-error-summary" tabindex="-1" role="alert">
+              @if (error()) {
+                <p>{{ error() }}</p>
+              } @else {
+                <p>Quelques détails à vérifier :</p>
+              }
+              @if (invalidFields().length) {
+                <ul>
+                  @for (field of invalidFields(); track field) {
+                    <li>
+                      <a [href]="'#auth-' + field">{{ fieldError(field) }}</a>
+                    </li>
+                  }
+                </ul>
+              }
+            </div>
+          }
+          @if (isRegister()) {
+            <div class="form-field">
+              <label for="auth-username">Nom d’utilisateur</label
+              ><input
+                id="auth-username"
+                formControlName="username"
+                autocomplete="username"
+                placeholder="Votre nom de cinéphile"
+                maxlength="20"
+                [attr.aria-invalid]="hasError('username')"
+                [attr.aria-describedby]="hasError('username') ? 'username-error' : 'username-hint'"
+              />
+              @if (hasError('username')) {
+                <span id="username-error" class="field-error">{{ fieldError('username') }}</span>
+              } @else {
+                <small id="username-hint"
+                  >3 à 20 caractères : lettres, chiffres ou underscore.</small
+                >
+              }
+            </div>
+            <div class="form-field">
+              <label for="auth-email">Adresse email</label
+              ><input
+                id="auth-email"
+                type="email"
+                formControlName="email"
+                autocomplete="email"
+                placeholder="vous@exemple.com"
+                [attr.aria-invalid]="hasError('email')"
+                [attr.aria-describedby]="hasError('email') ? 'email-error' : null"
+              />
+              @if (hasError('email')) {
+                <span id="email-error" class="field-error">{{ fieldError('email') }}</span>
+              }
+            </div>
+          } @else {
+            <div class="form-field">
+              <label for="auth-identifier">Email ou nom d’utilisateur</label
+              ><input
+                id="auth-identifier"
+                formControlName="identifier"
+                autocomplete="username"
+                placeholder="vous@exemple.com"
+                [attr.aria-invalid]="hasError('identifier')"
+                [attr.aria-describedby]="hasError('identifier') ? 'identifier-error' : null"
+              />
+              @if (hasError('identifier')) {
+                <span id="identifier-error" class="field-error">{{
+                  fieldError('identifier')
+                }}</span>
+              }
+            </div>
+          }
+          <div class="form-field">
+            <label for="auth-password">Mot de passe</label>
+            <div class="password-field">
+              <input
+                id="auth-password"
+                [type]="showPassword() ? 'text' : 'password'"
+                formControlName="password"
+                [autocomplete]="isRegister() ? 'new-password' : 'current-password'"
+                placeholder="Votre mot de passe"
+                [attr.aria-invalid]="hasError('password')"
+                [attr.aria-describedby]="
+                  hasError('password') ? 'password-error' : isRegister() ? 'password-hint' : null
+                "
+              /><button
+                type="button"
+                class="icon-button"
+                (click)="showPassword.update(toggle)"
+                [attr.aria-label]="
+                  showPassword() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'
+                "
+                [attr.aria-pressed]="showPassword()"
+              >
+                <nfx-icon [name]="showPassword() ? 'eyeOff' : 'eye'" />
+              </button>
+            </div>
+            @if (hasError('password')) {
+              <span id="password-error" class="field-error">{{ fieldError('password') }}</span>
+            } @else if (isRegister()) {
+              <small id="password-hint">Au moins 8 caractères.</small>
+            }
+          </div>
+          <button class="button primary auth-submit" type="submit" [disabled]="pending()">
+            {{
+              pending()
+                ? isRegister()
+                  ? 'Création du compte…'
+                  : 'Connexion…'
+                : isRegister()
+                  ? 'Créer mon compte'
+                  : 'Se connecter'
+            }}<nfx-icon name="arrow" />
+          </button>
+        </form>
+        <p class="auth-switch">
+          <span>{{ isRegister() ? 'Déjà dans l’histoire ?' : 'Votre première visite ?' }}</span>
+          <a [routerLink]="isRegister() ? '/connexion' : '/inscription'"
+            >{{ isRegister() ? 'Connectez-vous' : 'Créez un compte' }}<nfx-icon name="upRight"
+          /></a>
+        </p>
+        <div class="auth-panel-footer">
+          <span class="auth-mini-brand">neo4flix<span class="brand-dot">.</span></span
+          ><span>LE CINÉMA, CONNECTÉ.</span>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

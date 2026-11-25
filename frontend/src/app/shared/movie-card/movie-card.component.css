@@ -1,0 +1,212 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.movie-card {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  transition:
+    border-color var(--motion-slow),
+    box-shadow var(--motion-slow);
+}
+
+.poster-link {
+  position: absolute;
+  inset: 0;
+  display: block;
+  color: var(--cotton);
+}
+
+.poster-image {
+  position: absolute;
+  inset: 0;
+}
+
+.poster-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.poster-scrim,
+.poster-wash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.poster-scrim {
+  background:
+    linear-gradient(
+      0deg,
+      var(--noir) 0%,
+      color-mix(in srgb, var(--noir) 94%, transparent) 12%,
+      color-mix(in srgb, var(--noir) 78%, transparent) 32%,
+      color-mix(in srgb, var(--maroon) 18%, transparent) 62%,
+      transparent 82%
+    ),
+    linear-gradient(180deg, color-mix(in srgb, var(--noir) 20%, transparent), transparent 35%);
+}
+
+.poster-wash {
+  background: linear-gradient(
+    145deg,
+    transparent 25%,
+    color-mix(in srgb, var(--maroon) 42%, transparent) 100%
+  );
+  opacity: 0;
+  transition: opacity var(--motion-slow);
+}
+
+.poster-caption {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  left: 18px;
+}
+
+.movie-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 7px;
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.movie-title {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  min-height: 2.6em;
+  margin: 0;
+  font-family: var(--heading);
+  font-size: clamp(16px, 1.3vw, 19px);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.3px;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
+.poster-discover {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  color: var(--cotton);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  opacity: 0;
+  transform: translateY(5px);
+  transition:
+    opacity var(--motion-slow),
+    transform var(--motion-slow);
+}
+
+.poster-discover nfx-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.card-save {
+  position: absolute;
+  z-index: 1;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid color-mix(in srgb, var(--cotton) 30%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--noir) 72%, transparent);
+  color: var(--cotton);
+  backdrop-filter: blur(8px);
+  transition:
+    background-color var(--motion-fast),
+    border-color var(--motion-fast);
+}
+
+.card-save nfx-icon {
+  width: 19px;
+  height: 19px;
+}
+
+.card-save:hover,
+.card-save.saved {
+  border-color: var(--border-active);
+  background: var(--accent-fill);
+  color: var(--accent-ink);
+}
+
+.poster-link:focus-visible {
+  outline: 2px solid var(--cotton);
+  outline-offset: -5px;
+  border-radius: inherit;
+}
+
+.movie-card.is-hovered,
+.movie-card:focus-within {
+  border-color: var(--border-active);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--maroon) 25%, transparent);
+}
+
+.movie-card.is-hovered .poster-wash,
+.movie-card.is-hovered .poster-discover,
+.movie-card:focus-within .poster-wash,
+.movie-card:focus-within .poster-discover {
+  opacity: 1;
+  transform: none;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .poster-discover {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .movie-card {
+    border-radius: 12px;
+  }
+
+  .poster-caption {
+    right: 12px;
+    bottom: 14px;
+    left: 12px;
+  }
+
+  .movie-meta {
+    gap: 3px 5px;
+    margin-bottom: 6px;
+    font-size: 11px;
+  }
+
+  .movie-title {
+    font-size: 16px;
+  }
+
+  .poster-discover {
+    margin-top: 8px;
+    font-size: 11px;
+  }
+
+  .card-save {
+    top: 8px;
+    right: 8px;
+  }
+}

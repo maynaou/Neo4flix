@@ -1,0 +1,536 @@
+:host {
+  --hero-header-height: 84px;
+  --hero-navigation-height: 0px;
+  display: block;
+  min-width: 0;
+}
+.wipe-hero {
+  position: relative;
+  height: clamp(450px, 35vw, 550px);
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--noir);
+  touch-action: pan-y;
+}
+.wipe-slide,
+.wipe-welcome {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.wipe-slide {
+  opacity: 0;
+  visibility: hidden;
+}
+.wipe-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+.wipe-media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--maroon), var(--noir));
+}
+.wipe-cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 25%;
+  user-select: none;
+}
+.wipe-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(15, 12, 12, 0.83),
+      rgba(15, 12, 12, 0.36) 48%,
+      rgba(15, 12, 12, 0.02) 80%
+    ),
+    linear-gradient(0deg, rgba(15, 12, 12, 0.95), rgba(15, 12, 12, 0.22) 62%, rgba(15, 12, 12, 0.5));
+}
+.wipe-copy {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 34px 40px 101px;
+  pointer-events: none;
+}
+.wipe-heading {
+  min-width: 0;
+}
+.wipe-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 20px;
+  color: var(--cotton);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 1.8px;
+}
+.wipe-eyebrow > span {
+  width: 22px;
+  height: 1px;
+  background: var(--cotton);
+}
+.wipe-title {
+  max-width: 1050px;
+  margin: 0;
+  color: var(--cotton);
+  font-family: var(--heading);
+  font-size: clamp(55px, 6.8vw, 100px);
+  font-weight: 500;
+  line-height: 1.03;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+}
+.wipe-word {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  padding-right: 0.22em;
+  padding-bottom: 0.11em;
+  margin-bottom: -0.11em;
+  vertical-align: bottom;
+}
+.wipe-word-inner {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.wipe-caption {
+  width: min(100%, 490px);
+  pointer-events: auto;
+}
+.wipe-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 15px;
+  color: var(--cotton);
+  font-size: 11px;
+}
+.wipe-meta-dot {
+  color: var(--muted);
+}
+.wipe-description {
+  max-width: 48ch;
+  margin: 0 0 22px;
+  color: var(--cotton);
+  font-size: 14px;
+  line-height: 1.85;
+}
+.wipe-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.wipe-actions .button {
+  min-height: 46px;
+  font-size: 11px;
+}
+.wipe-save {
+  background: rgba(27, 23, 23, 0.45);
+  border-color: rgba(237, 235, 221, 0.3);
+  color: var(--cotton);
+}
+.wipe-save:hover {
+  background: rgba(237, 235, 221, 0.12);
+  border-color: rgba(237, 235, 221, 0.55);
+}
+.wipe-footer {
+  position: absolute;
+  right: 26px;
+  bottom: 21px;
+  left: 40px;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 20px;
+}
+.wipe-signature {
+  margin: 0;
+  color: var(--muted);
+  font-size: 7px;
+  letter-spacing: 1.8px;
+}
+.wipe-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border: 1px solid rgba(237, 235, 221, 0.25);
+  border-radius: 32px;
+  background: rgba(27, 23, 23, 0.7);
+  backdrop-filter: blur(10px);
+}
+.wipe-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  color: var(--cotton);
+  transition:
+    background var(--motion-fast),
+    border-color var(--motion-fast);
+}
+.wipe-arrow:hover:not(:disabled) {
+  border-color: var(--border-active);
+  background: var(--cherry);
+}
+.wipe-arrow:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.wipe-arrow nfx-icon {
+  width: 18px;
+  height: 18px;
+}
+.wipe-counter {
+  min-width: 44px;
+  color: var(--cotton);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  white-space: nowrap;
+}
+.wipe-counter > span {
+  color: var(--muted);
+}
+.wipe-pagination {
+  display: flex;
+  justify-self: end;
+  align-items: center;
+}
+.wipe-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 7px;
+}
+.wipe-page > span {
+  width: 27px;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(237, 235, 221, 0.3);
+  transition:
+    background var(--motion-fast),
+    transform var(--motion-fast);
+}
+.wipe-page.is-selected > span {
+  background: var(--cotton);
+}
+.wipe-page:hover > span {
+  background: var(--cotton);
+  transform: scaleX(1.12);
+}
+.welcome-title {
+  max-width: 900px;
+  font-size: clamp(44px, 5vw, 72px);
+  text-transform: none;
+}
+
+@media (min-width: 1650px) {
+  .wipe-copy {
+    padding: 39px 44px 112px;
+  }
+  .wipe-footer {
+    left: 44px;
+    right: 30px;
+  }
+  .wipe-description {
+    font-size: 15px;
+  }
+}
+@media (max-width: 1100px) {
+  .wipe-copy {
+    padding: 31px 31px 101px;
+  }
+  .wipe-title {
+    font-size: 65px;
+  }
+  .wipe-footer {
+    left: 31px;
+    right: 24px;
+  }
+  .wipe-signature {
+    max-width: 150px;
+    line-height: 1.8;
+  }
+}
+@media (max-width: 700px) {
+  .wipe-hero {
+    height: 570px;
+  }
+  .wipe-copy {
+    padding: 28px 26px 112px;
+    gap: 25px;
+  }
+  .wipe-title {
+    font-size: clamp(45px, 8vw, 61px);
+    line-height: 1.08;
+  }
+  .wipe-eyebrow {
+    margin-bottom: 23px;
+    font-size: 8px;
+    letter-spacing: 1.4px;
+  }
+  .wipe-cover {
+    object-position: 58% 25%;
+  }
+  .wipe-scrim {
+    background:
+      linear-gradient(90deg, rgba(15, 12, 12, 0.76), rgba(15, 12, 12, 0.15)),
+      linear-gradient(
+        0deg,
+        rgba(15, 12, 12, 0.98),
+        rgba(15, 12, 12, 0.52) 57%,
+        rgba(15, 12, 12, 0.58)
+      );
+  }
+  .wipe-caption {
+    max-width: 460px;
+  }
+  .wipe-description {
+    max-width: 43ch;
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 21px;
+  }
+  .wipe-meta {
+    font-size: 10px;
+    gap: 7px;
+    margin-bottom: 14px;
+  }
+  .wipe-actions {
+    gap: 8px;
+  }
+  .wipe-actions .button {
+    padding: 10px 13px;
+    font-size: 10px;
+  }
+  .wipe-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    bottom: 20px;
+    left: 24px;
+    right: 22px;
+  }
+  .wipe-signature {
+    display: none;
+  }
+  .wipe-controls {
+    gap: 3px;
+    padding: 3px;
+  }
+  .wipe-counter {
+    min-width: 40px;
+    font-size: 10px;
+  }
+  .wipe-page > span {
+    width: 24px;
+  }
+  .welcome-title {
+    font-size: 45px;
+  }
+}
+@media (max-width: 460px) {
+  .wipe-hero {
+    height: 555px;
+    border-radius: 13px;
+  }
+  .wipe-copy {
+    padding: 27px 21px 106px;
+  }
+  .wipe-title {
+    font-size: 43px;
+    letter-spacing: -0.06em;
+  }
+  .wipe-eyebrow {
+    font-size: 7px;
+    letter-spacing: 1.35px;
+  }
+  .wipe-description {
+    font-size: 12px;
+    line-height: 1.85;
+  }
+  .wipe-meta {
+    font-size: 9px;
+  }
+  .wipe-footer {
+    left: 17px;
+    right: 17px;
+    gap: 6px;
+  }
+  .wipe-controls {
+    gap: 1px;
+  }
+  .wipe-pagination {
+    gap: 0;
+  }
+  .wipe-page {
+    width: 42px;
+  }
+  .wipe-page > span {
+    width: 22px;
+  }
+  .welcome-title {
+    font-size: 39px;
+    line-height: 1.16;
+  }
+}
+@media (max-width: 359px) {
+  .wipe-hero {
+    height: 590px;
+  }
+  .wipe-copy {
+    padding-bottom: 144px;
+  }
+  .wipe-title {
+    font-size: 37px;
+  }
+  .wipe-footer {
+    flex-direction: column;
+    gap: 0;
+    bottom: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wipe-page > span,
+  .wipe-arrow,
+  .wipe-save {
+    transition: none;
+  }
+}
+
+.wipe-hero.is-fullscreen {
+  height: calc(100vh - var(--hero-header-height) - var(--hero-navigation-height));
+  height: calc(100svh - var(--hero-header-height) - var(--hero-navigation-height));
+  min-height: 420px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+}
+
+.wipe-hero.is-fullscreen .wipe-copy {
+  padding: clamp(30px, 4svh, 48px) var(--explore-gutter, 36px) 112px;
+}
+
+.wipe-hero.is-fullscreen .wipe-title {
+  font-size: clamp(62px, 7.5vw, 116px);
+}
+
+.wipe-hero.is-fullscreen .wipe-caption {
+  width: min(100%, 550px);
+}
+
+.wipe-hero.is-fullscreen .wipe-description {
+  font-size: 15px;
+}
+
+.wipe-hero.is-fullscreen .wipe-footer {
+  left: var(--explore-gutter, 36px);
+  right: var(--explore-gutter, 36px);
+  bottom: 26px;
+}
+
+.wipe-scroll-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  justify-self: start;
+  min-height: 44px;
+  color: var(--cotton);
+  font-size: 10px;
+  letter-spacing: 0.3px;
+}
+
+.wipe-scroll-cue nfx-icon {
+  width: 16px;
+  height: 16px;
+  transform: rotate(90deg);
+}
+
+.wipe-scroll-cue:hover {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+@media (max-width: 1023px) {
+  :host {
+    --hero-header-height: 134px;
+    --hero-navigation-height: 66px;
+  }
+}
+
+@media (max-width: 700px) {
+  .wipe-hero.is-fullscreen {
+    min-height: 390px;
+  }
+
+  .wipe-hero.is-fullscreen .wipe-copy {
+    padding: 28px var(--explore-gutter, 20px) 106px;
+  }
+
+  .wipe-hero.is-fullscreen .wipe-title {
+    font-size: clamp(42px, 9.5vw, 62px);
+  }
+
+  .wipe-hero.is-fullscreen .wipe-description {
+    font-size: 12px;
+  }
+
+  .wipe-hero.is-fullscreen .wipe-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 8px;
+    bottom: 18px;
+  }
+
+  .wipe-hero.is-fullscreen .wipe-scroll-cue {
+    display: inline-flex;
+    max-width: none;
+    gap: 6px;
+    font-size: 9px;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+
+  .wipe-hero.is-fullscreen .wipe-pagination {
+    display: none;
+  }
+}
+
+/* Dynamic TMDB titles can be longer than the editorial demo titles. */
+.wipe-title.long-title {
+  font-size: clamp(26px, 3.5vw, 50px);
+  line-height: 1.12;
+}
+@media (max-width: 700px) {
+  .wipe-title.long-title {
+    font-size: clamp(24px, 6.8vw, 36px);
+  }
+}

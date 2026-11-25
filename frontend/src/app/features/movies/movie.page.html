@@ -1,0 +1,122 @@
+<div class="page movie-page" nfxPageMotion [nfxPageKey]="movie()?.id">
+  <a class="back-link" routerLink="/"><nfx-icon name="left" />Retour au catalogue</a>
+  @if (loading()) {
+    <div class="detail-loading" aria-busy="true">
+      <div class="skeleton-poster"></div>
+      <p role="status">Votre film arrive…</p>
+    </div>
+  } @else if (movie(); as film) {
+    <section class="movie-detail" nfxReveal>
+      @if (film.backdrop) {
+        <img class="detail-backdrop" [src]="film.backdrop" alt="" width="1280" height="720" />
+      }
+      <div class="detail-shade"></div>
+      <div class="detail-poster">
+        @if (film.poster) {
+          <img [src]="film.poster" [alt]="'Affiche de ' + film.title" width="400" height="600" />
+        } @else {
+          <div class="poster-fallback">
+            <nfx-icon name="film" /><span>{{ film.title }}</span>
+          </div>
+        }
+      </div>
+      <div class="detail-info">
+        <p class="eyebrow">PRENEZ LE TEMPS D’UNE HISTOIRE</p>
+        <h1>{{ film.title }}<span class="accent-dot">.</span></h1>
+        <div class="detail-meta">
+          <span>{{ film.releaseYear ?? 'À venir' }}</span>
+          @if (film.duration) {
+            <span class="meta-dot">·</span><nfx-icon name="clock" /><span>{{ film.duration }}</span>
+          }
+        </div>
+        <div class="detail-genres">
+          @for (genre of film.genres; track genre) {
+            <span>{{ genre }}</span>
+          }
+        </div>
+        <h2>L’histoire</h2>
+        <p class="synopsis">
+          {{
+            film.description ||
+              'Les informations détaillées de ce film ne sont pas encore disponibles. Retrouvez ses genres et ses interprètes ci-dessous.'
+          }}
+        </p>
+        <div class="detail-actions">
+          <button
+            class="button primary"
+            (click)="watchlist.toggle(film)"
+            [attr.aria-pressed]="watchlist.has(film.id)"
+          >
+            <nfx-icon [name]="watchlist.has(film.id) ? 'check' : 'plus'" />{{
+              watchlist.has(film.id) ? 'Dans ma liste' : 'Ajouter à ma liste'
+            }}</button
+          ><button class="button secondary" (click)="share()">
+            <nfx-icon name="upRight" />Partager le film
+          </button>
+        </div>
+        <p class="local-note">
+          <nfx-icon name="bookmark" />Votre liste est enregistrée sur cet appareil.
+        </p>
+      </div>
+    </section>
+    <section class="cast-section" nfxReveal>
+      <div class="section-heading" nfxReveal>
+        <div>
+          <span class="section-kicker">LES VISAGES DE L’HISTOIRE</span>
+          <h2>Au casting</h2>
+        </div>
+      </div>
+      <div class="cast-list">
+        @for (actor of film.actors; track actor) {
+          <span class="cast-chip"
+            ><span>{{ initials(actor) }}</span
+            >{{ actor }}</span
+          >
+        } @empty {
+          <p class="muted">Le casting n’est pas encore renseigné.</p>
+        }
+      </div>
+    </section>
+    @if (similarMovies().length) {
+      <section class="related-section">
+        <div class="section-heading" nfxReveal>
+          <div>
+            <span class="section-kicker">PROLONGEZ LE VOYAGE</span>
+            <h2>Dans le même univers</h2>
+            <p class="intro-copy">Des histoires à découvrir aussi.</p>
+          </div>
+        </div>
+        <div class="movie-grid">
+          @for (related of similarMovies(); track related.id) {
+            <nfx-movie-card [movie]="related" nfxReveal [nfxRevealIndex]="$index" />
+          }
+        </div>
+      </section>
+    }
+  } @else {
+    <div class="empty-state">
+      <span class="empty-icon"><nfx-icon name="film" /></span>
+      <h1>
+        {{
+          error()
+            ? 'Le film est momentanément indisponible.'
+            : 'Ce film n’est pas dans le catalogue.'
+        }}
+      </h1>
+      <p>
+        {{
+          error()
+            ? 'Réessayez dans un instant pour retrouver votre histoire.'
+            : 'Il reste de belles histoires à découvrir.'
+        }}
+      </p>
+      @if (error()) {
+        <button class="button primary" (click)="reload()">
+          Réessayer<nfx-icon name="arrow" />
+        </button>
+      } @else {
+        <a class="button primary" routerLink="/">Explorer les films<nfx-icon name="arrow" /></a>
+      }
+    </div>
+  }
+</div>

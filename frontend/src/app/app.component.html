@@ -1,0 +1,228 @@
+<nfx-page-transition />
+<a class="skip-link" href="#main-content">Aller au contenu</a>
+<div class="app-shell" [nfxSidebarMotion]="sidebarCollapsed()">
+  <aside class="sidebar" aria-label="Menu Neo4flix">
+    <div class="sidebar-header">
+      <a
+        class="brand sidebar-copy"
+        routerLink="/"
+        aria-label="Neo4flix, accueil"
+        [attr.tabindex]="sidebarCollapsed() ? -1 : null"
+        [attr.aria-hidden]="sidebarCollapsed() ? true : null"
+      >
+        <img src="/favicon.svg" alt="" width="36" height="36" />
+        <span>neo<span class="brand-four">4</span>flix<span class="brand-dot">.</span></span>
+      </a>
+      <button
+        class="sidebar-toggle"
+        type="button"
+        (click)="toggleSidebar()"
+        aria-controls="sidebar-navigation"
+        [attr.aria-expanded]="!sidebarCollapsed()"
+        [attr.aria-label]="sidebarCollapsed() ? 'Ouvrir le menu' : 'Réduire le menu'"
+        [attr.title]="sidebarCollapsed() ? 'Ouvrir le menu' : 'Réduire le menu'"
+      >
+        <nfx-icon name="panelClose" />
+      </button>
+    </div>
+
+    <nav id="sidebar-navigation" class="side-nav" aria-label="Navigation principale">
+      <div class="nav-section">
+        <p class="nav-label sidebar-copy">DÉCOUVRIR</p>
+        <a
+          class="nav-item"
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          ariaCurrentWhenActive="page"
+          aria-label="Explorer"
+          [attr.title]="sidebarCollapsed() ? 'Explorer' : null"
+        >
+          <span class="nav-icon"><nfx-icon name="compass" /></span>
+          <span class="nav-text sidebar-copy">Explorer</span>
+          <nfx-icon class="nav-arrow sidebar-copy" name="upRight" />
+        </a>
+        <a
+          class="nav-item"
+          routerLink="/ma-liste"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+          aria-label="Ma liste"
+          [attr.title]="sidebarCollapsed() ? 'Ma liste' : null"
+        >
+          <span class="nav-icon"><nfx-icon name="bookmark" /></span>
+          <span class="nav-text sidebar-copy">Ma liste</span>
+          @if (watchlist.ids().length) {
+            <span class="count-badge sidebar-copy">{{ watchlist.ids().length }}</span>
+          }
+        </a>
+        <a
+          class="nav-item"
+          routerLink="/genres"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+          aria-label="Les genres"
+          [attr.title]="sidebarCollapsed() ? 'Les genres' : null"
+        >
+          <span class="nav-icon"><nfx-icon name="grid" /></span>
+          <span class="nav-text sidebar-copy">Les genres</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <p class="nav-label sidebar-copy">VOTRE ESPACE</p>
+        @if (auth.session()) {
+          <button
+            class="nav-item"
+            type="button"
+            (click)="logout()"
+            aria-label="Déconnexion"
+            [attr.title]="sidebarCollapsed() ? 'Déconnexion' : null"
+          >
+            <span class="nav-icon"><nfx-icon name="logout" /></span>
+            <span class="nav-text sidebar-copy">Déconnexion</span>
+          </button>
+        } @else {
+          <a
+            class="nav-item"
+            routerLink="/connexion"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            aria-label="Se connecter"
+            [attr.title]="sidebarCollapsed() ? 'Se connecter' : null"
+          >
+            <span class="nav-icon"><nfx-icon name="user" /></span>
+            <span class="nav-text sidebar-copy">Se connecter</span>
+          </a>
+          <a
+            class="nav-item"
+            routerLink="/inscription"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            aria-label="Créer un compte"
+            [attr.title]="sidebarCollapsed() ? 'Créer un compte' : null"
+          >
+            <span class="nav-icon"><nfx-icon name="plus" /></span>
+            <span class="nav-text sidebar-copy">Créer un compte</span>
+          </a>
+        }
+      </div>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div
+        class="sidebar-profile"
+        role="group"
+        [attr.aria-label]="auth.session()?.displayName || 'Bienvenue, cinéphile'"
+      >
+        <span class="avatar" aria-hidden="true">
+          @if (sidebarCollapsed()) {
+            <nfx-icon name="user" />
+          } @else {
+            {{ auth.session()?.displayName?.charAt(0)?.toUpperCase() || 'N' }}
+          }
+        </span>
+        <div class="sidebar-copy profile-text">
+          <strong>{{ auth.session()?.displayName || 'Bienvenue, cinéphile' }}</strong>
+          <small>{{ auth.session() ? 'Votre espace Neo4flix' : 'Explorez à votre rythme' }}</small>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="app-content">
+    <header class="topbar">
+      <a class="mobile-brand brand" routerLink="/" aria-label="Neo4flix, accueil"
+        ><img src="/favicon.svg" alt="" width="32" height="32" /><span
+          >neo4flix<span class="brand-dot">.</span></span
+        ></a
+      >
+      <form class="global-search" role="search" (submit)="submitSearch($event)">
+        <nfx-icon name="search" />
+        <label class="sr-only" for="global-search">{{
+          catalog.isTmdb
+            ? 'Rechercher un film'
+            : 'Rechercher un film, un genre, un acteur ou une année'
+        }}</label>
+        <input
+          #searchInput
+          id="global-search"
+          type="search"
+          [placeholder]="catalog.isTmdb ? 'Rechercher un film…' : 'Un film, un genre, un acteur…'"
+          autocomplete="off"
+          [value]="catalog.search()"
+          (input)="onSearch($event)"
+        />
+        @if (catalog.search()) {
+          <button
+            type="button"
+            class="search-clear"
+            (click)="catalog.search.set('')"
+            aria-label="Effacer la recherche"
+          >
+            <nfx-icon name="close" />
+          </button>
+        } @else {
+          <kbd>Ctrl K</kbd>
+        }
+      </form>
+      <div class="header-right">
+        <span class="header-manifesto">UN BON FILM CHANGE LA SOIRÉE.</span>
+        @if (auth.session()) {
+          <span class="header-account"
+            ><span class="avatar small">{{
+              auth.session()!.displayName.charAt(0).toUpperCase()
+            }}</span
+            ><span>{{ auth.session()!.displayName }}</span></span
+          >
+        } @else {
+          <a class="account-link" routerLink="/connexion"
+            ><nfx-icon name="user" /><span>Se connecter</span><nfx-icon name="upRight"
+          /></a>
+        }
+      </div>
+    </header>
+    <main id="main-content" tabindex="-1"><router-outlet /></main>
+    <footer class="site-footer">
+      <span>neo4flix<span class="brand-dot">.</span></span>
+      <p>Du cinéma. Des connexions. Vous.</p>
+      <a
+        class="tmdb-credit"
+        href="https://www.themoviedb.org"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Films et images : TMDB<nfx-icon name="upRight"
+      /></a>
+    </footer>
+  </div>
+</div>
+<nav class="mobile-nav" aria-label="Navigation mobile">
+  <a
+    routerLink="/"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    ariaCurrentWhenActive="page"
+    ><nfx-icon name="compass" /><span>Explorer</span></a
+  >
+  <a routerLink="/ma-liste" routerLinkActive="active" ariaCurrentWhenActive="page"
+    ><nfx-icon name="bookmark" /><span
+      >Ma liste
+      @if (watchlist.ids().length) {
+        · {{ watchlist.ids().length }}
+      }
+    </span></a
+  >
+  <a routerLink="/genres" routerLinkActive="active" ariaCurrentWhenActive="page"
+    ><nfx-icon name="grid" /><span>Genres</span></a
+  >
+</nav>
+<div class="toast-region" role="status" aria-live="polite" aria-atomic="true">
+  @if (toast.message()) {
+    <div class="toast">
+      <span class="toast-check"><nfx-icon name="check" /></span>
+      <p>{{ toast.message() }}</p>
+      <button class="icon-button" (click)="toast.dismiss()" aria-label="Fermer le message">
+        <nfx-icon name="close" />
+      </button>
+    </div>
+  }
+</div>

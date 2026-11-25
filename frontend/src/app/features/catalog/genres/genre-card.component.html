@@ -1,0 +1,40 @@
+<a
+  class="genre-card"
+  [class.is-hovered]="pointerHover()"
+  [class.featured]="featured()"
+  [class.compact]="!spacious()"
+  [class.genre-cool]="index() % 3 === 1"
+  [class.genre-warm]="index() % 3 === 2"
+  [href]="href()"
+  (click)="open($event)"
+  [attr.aria-label]="'Explorer les films ' + genre().name"
+  [attr.aria-busy]="transition.running()"
+>
+  <div class="genre-visual">
+    @if (!imageFailed()) {
+      <img
+        [src]="image()"
+        alt=""
+        width="1280"
+        height="720"
+        [loading]="index() < 3 ? 'eager' : 'lazy'"
+        decoding="async"
+        draggable="false"
+        (error)="imageFailed.set(true)"
+      />
+    }
+  </div>
+  <span class="genre-shade" aria-hidden="true"></span>
+  <span class="genre-hover-shade" aria-hidden="true"></span>
+  <span class="genre-marker" aria-hidden="true">{{
+    (index() + 1).toString().padStart(2, '0')
+  }}</span>
+  <div class="genre-copy">
+    <h2>{{ genre().name }}</h2>
+    <p>{{ genre().description }}</p>
+    <div class="genre-footer">
+      <span class="genre-cta">Explorer les films</span>
+      <span class="genre-arrow" aria-hidden="true"><nfx-icon name="upRight" /></span>
+    </div>
+  </div>
+</a>
